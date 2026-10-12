@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*?*
+
+# Crawlers specific rules
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+Allow: /brochures/
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://eeipl.co.in/sitemap.xml
+Host: https://eeipl.co.in

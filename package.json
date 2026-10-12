@@ -1,0 +1,34 @@
+{
+  "name": "eeipl-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Equipage Equipment Solutions (EES / EEIPL) - Official Web Platform for Industrial Machinery, Lithium Forklifts, Pick & Carry Cranes, and Aerial Rescue Platforms in India",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/equipagees/eeipl.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "eslint": "^10.5.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.6.0",
+    "sharp": "^0.35.4",
+    "vite": "^8.1.0"
+  }
+}
