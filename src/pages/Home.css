@@ -150,13 +150,17 @@
 
 .hero-heading {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  font-size: clamp(2.1rem, 3.5vw, 3.2rem);
   font-weight: 900;
-  line-height: 1.02;
+  line-height: 1.08;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: #ffffff;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
+}
+
+.hero-heading .hero-line {
+  display: block;
 }
 
 .hero-heading .amber-gradient {
@@ -919,6 +923,10 @@
 }
 
 @media (max-width: 600px) {
+  .hero-heading {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+    line-height: 1.1;
+  }
   .hero-stats-strip {
     grid-template-columns: 1fr 1fr;
   }

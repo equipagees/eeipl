@@ -331,9 +331,9 @@ function Home() {
             </div>
 
             <h1 className="hero-heading">
-              Engineered Power. <br />
-              <span className="amber-gradient">Zero-Compromise</span> <br />
-              Fleet Solutions.
+              <span className="hero-line">Engineered Power.</span>
+              <span className="hero-line amber-gradient">Zero-Compromise</span>
+              <span className="hero-line">Fleet Solutions.</span>
             </h1>
 
             <p className="hero-subtext">
