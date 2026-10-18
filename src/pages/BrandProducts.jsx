@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { products, brands } from '../data/productsData';
 import ProductDetail from './ProductDetail';
+import SEO from '../components/SEO';
 
 function BrandProducts() {
   const { brandId } = useParams();
@@ -29,8 +30,32 @@ function BrandProducts() {
   // Filter products by this brand code
   const brandProducts = products.filter((p) => p.brand.toUpperCase() === brand.brandCode.toUpperCase());
 
+  const brandSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${brand.name} Equipment Lineup India | Equipage Equipment Solutions`,
+    description: brand.longDescription || brand.description,
+    url: `https://eeipl.co.in/products/${brand.id}`,
+    about: {
+      '@type': 'Brand',
+      name: brand.name
+    }
+  };
+
   return (
     <div className="brand-products-page animate-fade-up">
+      <SEO
+        title={`${brand.name} Machinery & Equipment | Equipage Equipment Solutions`}
+        description={brand.longDescription ? brand.longDescription.substring(0, 160) : brand.description}
+        keywords={`${brand.name}, ${brand.name} India, industrial equipment, material handling`}
+        canonicalUrl={`https://eeipl.co.in/products/${brand.id}`}
+        schemaJson={brandSchema}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Products', url: '/products' },
+          { name: brand.name, url: `/products/${brand.id}` }
+        ]}
+      />
       {/* Brand Hero Header */}
       <section className="page-header brand-header-section" style={{ background: 'var(--navy2)', color: '#ffffff', padding: '80px 0 60px' }}>
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>

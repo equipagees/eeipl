@@ -1,17 +1,28 @@
+# Robots.txt for Equipage Equipment Solutions (EES / EEIPL)
+# Web: https://eeipl.co.in
+
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /*?*
+Disallow: /.git/
+Disallow: /_vite/
+Crawl-delay: 1
 
-# Crawlers specific rules
+# Major Search Engine Crawlers
 User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
 Allow: /
 Allow: /assets/
 Allow: /brochures/
+Allow: /clients/
 
-User-agent: Bingbot
-Allow: /
-
+# Sitemap & Preferred Host
 Sitemap: https://eeipl.co.in/sitemap.xml
 Host: https://eeipl.co.in
+

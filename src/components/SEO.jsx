@@ -7,10 +7,13 @@ function SEO({
   title = 'Equipage Equipment Solutions (EES) | Industrial Machinery & Forklifts India',
   description = 'Equipage Equipment Solutions (EES / EEIPL) is India’s authorized partner for BYD lithium forklifts, Terex Franna cranes, Beltas aerial ladders, and Doosan Bobcat equipment.',
   keywords = 'Equipage Equipment Solutions, EEIPL, BYD lithium forklift, Terex Franna cranes, Beltas turntable ladders, Doosan Bobcat India, aerial platforms',
-  canonicalUrl = window.location.href,
+  canonicalUrl = typeof window !== 'undefined' ? window.location.href : 'https://eeipl.co.in/',
   ogType = 'website',
   ogImage = 'https://eeipl.co.in/logo.png',
-  schemaJson = null
+  schemaJson = null,
+  breadcrumbs = null,
+  faqList = null,
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 }) {
   useEffect(() => {
     // 1. Update Title
@@ -33,6 +36,7 @@ function SEO({
     // 2. Standard Meta Tags
     setMetaTag('meta[name="description"]', 'name', 'description', description);
     setMetaTag('meta[name="keywords"]', 'name', 'keywords', keywords);
+    setMetaTag('meta[name="robots"]', 'name', 'robots', robots);
 
     // 3. Open Graph Tags
     setMetaTag('meta[property="og:title"]', 'property', 'og:title', formattedTitle);
@@ -55,27 +59,67 @@ function SEO({
     }
     canonical.setAttribute('href', canonicalUrl);
 
-    // 6. Structured Data Injection if provided
-    let scriptTag = null;
-    if (schemaJson) {
-      const scriptId = 'page-schema-jsonld';
-      scriptTag = document.getElementById(scriptId);
-      if (!scriptTag) {
-        scriptTag = document.createElement('script');
-        scriptTag.id = scriptId;
-        scriptTag.type = 'application/ld+json';
-        document.head.appendChild(scriptTag);
+    // Helper to manage JSON-LD tags
+    const injectJsonLd = (id, jsonContent) => {
+      let tag = document.getElementById(id);
+      if (!tag) {
+        tag = document.createElement('script');
+        tag.id = id;
+        tag.type = 'application/ld+json';
+        document.head.appendChild(tag);
       }
-      scriptTag.textContent = JSON.stringify(schemaJson);
+      tag.textContent = JSON.stringify(jsonContent);
+      return tag;
+    };
+
+    const injectedTags = [];
+
+    // 6. Custom Structured Data Injection
+    if (schemaJson) {
+      injectedTags.push(injectJsonLd('page-schema-custom', schemaJson));
+    }
+
+    // 7. Automatic BreadcrumbList Schema
+    if (Array.isArray(breadcrumbs) && breadcrumbs.length > 0) {
+      const breadcrumbSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((crumb, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: crumb.name,
+          item: crumb.url.startsWith('http') ? crumb.url : `https://eeipl.co.in${crumb.url}`
+        }))
+      };
+      injectedTags.push(injectJsonLd('page-schema-breadcrumbs', breadcrumbSchema));
+    }
+
+    // 8. Automatic FAQPage Schema
+    if (Array.isArray(faqList) && faqList.length > 0) {
+      const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqList.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
+        }))
+      };
+      injectedTags.push(injectJsonLd('page-schema-faq', faqSchema));
     }
 
     return () => {
-      // Clean up injected page-specific schema on unmount
-      if (schemaJson && scriptTag) {
-        scriptTag.remove();
-      }
+      // Clean up injected page-specific schemas on unmount
+      injectedTags.forEach((tag) => {
+        if (tag && tag.parentNode) {
+          tag.remove();
+        }
+      });
     };
-  }, [title, description, keywords, canonicalUrl, ogType, ogImage, schemaJson]);
+  }, [title, description, keywords, canonicalUrl, ogType, ogImage, schemaJson, breadcrumbs, faqList, robots]);
 
   return null;
 }

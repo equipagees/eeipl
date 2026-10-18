@@ -3,13 +3,41 @@ import { products } from '../data/productsData';
 import SEO from '../components/SEO';
 
 function Products() {
+  const catalogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Industrial Machinery & Equipment Fleet Catalogue',
+    description: 'Complete machinery catalogue offered by Equipage Equipment Solutions including BYD lithium forklifts, Terex Franna cranes, Beltas turntable ladders, and Doosan Bobcat.',
+    numberOfItems: products.length,
+    itemListElement: products.map((p, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'Product',
+        name: p.name,
+        brand: {
+          '@type': 'Brand',
+          name: p.brand
+        },
+        category: p.category,
+        url: `https://eeipl.co.in/products/${p.id}`,
+        description: p.slogan || p.overview?.substring(0, 150)
+      }
+    }))
+  };
+
   return (
     <div className="products-page animate-fade-up">
       <SEO
-        title="Industrial Machinery & Equipment Catalogue"
+        title="Industrial Machinery & Equipment Catalogue | Equipage Equipment Solutions"
         description="Explore Equipage Equipment Solutions complete range of BYD lithium forklifts, Terex Franna cranes, Beltas turntable ladders, Doosan Bobcat, Liftmak, and Jinwoo AWPs across India."
         keywords="industrial equipment catalog India, electric forklifts, pick and carry cranes, aerial work platforms, turntable ladders"
         canonicalUrl="https://eeipl.co.in/products"
+        schemaJson={catalogSchema}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Products', url: '/products' }
+        ]}
       />
 
       {/* Page Header */}

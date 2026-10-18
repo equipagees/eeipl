@@ -700,7 +700,7 @@ function BeltasPage() {
                 { value: '5 Models', label: 'Height classes from 18m to 64m working height' },
                 { value: '400 Kg', label: 'Maximum rescue cage safe working load (L32–L64)' },
                 { value: '360°', label: 'Continuous hydraulic turret rotation on all models' }
-              ].map((stat, i, arr) => (
+              ].map((stat, i) => (
                 <div
                   key={i}
                   style={{

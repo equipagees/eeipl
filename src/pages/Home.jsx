@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import clientsData from '../data/clientsData';
 import { companyDetails, regionalLocations } from '../data/contactData';
 import SEO from '../components/SEO';
-import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit } from '../utils/security';
+import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit, isHumanSubmissionTiming } from '../utils/security';
 import './Home.css';
 
 function Home() {
@@ -203,7 +203,11 @@ function Home() {
     }
   ];
 
-  // ── 4. Security-Hardened Form State ──
+  const formRenderTimeRef = useRef(0);
+  useEffect(() => {
+    formRenderTimeRef.current = Date.now();
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -232,13 +236,19 @@ function Home() {
       return;
     }
 
-    // Security Check 2: Submission Rate Limiting
+    // Security Check 2: Submission Timing Guard
+    if (!isHumanSubmissionTiming(formRenderTimeRef.current, 1200)) {
+      setSubmitted(true);
+      return;
+    }
+
+    // Security Check 3: Submission Rate Limiting
     if (!checkRateLimit('home_quote_terminal', 5000)) {
       setFormError('Please wait a few seconds before submitting another quote request.');
       return;
     }
 
-    // Security Check 3: Strict Validation
+    // Security Check 4: Strict Validation
     if (!validateEmail(formData.email)) {
       setFormError('Please enter a valid corporate email address.');
       return;
@@ -248,7 +258,7 @@ function Home() {
       return;
     }
 
-    // Security Check 4: Input Sanitization
+    // Security Check 5: Input Sanitization
     const sanitizedPayload = {
       name: sanitizeInput(formData.name),
       company: sanitizeInput(formData.company),
@@ -257,6 +267,9 @@ function Home() {
       equipment: sanitizeInput(formData.equipment),
       message: sanitizeInput(formData.message)
     };
+
+    // Simulated secure dispatch of sanitizedPayload
+    void sanitizedPayload;
 
     // Generate random enquiry tracking code
     const generatedRef = 'EES-' + Math.floor(100000 + Math.random() * 900000);
@@ -272,6 +285,28 @@ function Home() {
     });
   };
 
+  const homeShowcaseSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Featured Heavy Machinery & Industrial Material Handling Solutions',
+    description: 'Flagship OEM equipment represented by Equipage Equipment Solutions across India.',
+    itemListElement: showcaseItems.map((item, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'Product',
+        name: item.name,
+        brand: {
+          '@type': 'Brand',
+          name: item.brand
+        },
+        description: item.desc,
+        image: `https://eeipl.co.in${item.image}`,
+        url: `https://eeipl.co.in${item.link}`
+      }
+    }))
+  };
+
   return (
     <div className="home-fresh">
       {/* ── SEO INJECTION ── */}
@@ -280,6 +315,7 @@ function Home() {
         description="India's premier authorized partner for BYD Lithium LiFePO4 electric forklifts, Terex Franna articulated pick & carry cranes, Beltas turntable ladders, and Doosan Bobcat. PAN-India sales, AMC and turnkey chassis mounting."
         keywords="Equipage Equipment Solutions, EEIPL, BYD lithium forklift India, Terex Franna crane, Beltas turntable ladder, Doosan Bobcat India, aerial platforms, heavy material handling"
         canonicalUrl="https://eeipl.co.in/"
+        schemaJson={homeShowcaseSchema}
       />
 
       {/* ═══════ 1. HERO SECTION ═══════ */}

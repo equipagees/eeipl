@@ -244,7 +244,7 @@ function FrannaParent() {
             </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
-            {frannaCategories.map((cat, idx) => (
+            {frannaCategories.map((cat) => (
               <div
                 key={cat.id}
                 style={{

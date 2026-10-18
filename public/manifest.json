@@ -1,21 +1,52 @@
 {
   "short_name": "Equipage",
-  "name": "Equipage Equipment Solutions (EES)",
+  "name": "Equipage Equipment Solutions (EES / EEIPL)",
+  "description": "Premier distributor and service partner for BYD Lithium Forklifts, Terex Franna Cranes, Beltas Turntable Ladders & Doosan Bobcat in India.",
+  "lang": "en-IN",
+  "categories": ["business", "productivity", "industrial"],
   "icons": [
     {
       "src": "/logo.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "/logo.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#0B0F19",
-  "theme_color": "#F59E0B",
+  "background_color": "#081220",
+  "theme_color": "#0088cc",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "Request Quick Quote",
+      "short_name": "Get Quote",
+      "description": "Submit a quick quote and machinery inquiry",
+      "url": "/contact#quote"
+    },
+    {
+      "name": "Machinery Catalogue",
+      "short_name": "Catalogue",
+      "description": "Browse complete industrial equipment range",
+      "url": "/products"
+    },
+    {
+      "name": "BYD Lithium Forklifts",
+      "short_name": "BYD Forklifts",
+      "description": "Zero emission LiFePO4 electric forklifts",
+      "url": "/products/byd-mhe"
+    },
+    {
+      "name": "Terex Franna Cranes",
+      "short_name": "Franna Cranes",
+      "description": "Articulated pick & carry cranes",
+      "url": "/products/terex-franna"
+    }
+  ]
 }

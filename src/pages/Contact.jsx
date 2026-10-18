@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { companyDetails, regionalLocations } from '../data/contactData';
 import SEO from '../components/SEO';
-import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit } from '../utils/security';
+import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit, isHumanSubmissionTiming } from '../utils/security';
 
 const ACCENT = '#0088cc';
 const ACCENT_GOLD = '#ffc107';
@@ -10,6 +10,29 @@ const ACCENT_LIGHT = 'rgba(0,136,204,0.12)';
 const ACCENT_BORDER = 'rgba(0,136,204,0.28)';
 const DARK = '#081220';
 const DARK2 = '#0d1d33';
+
+const contactFaqs = [
+  {
+    question: 'How fast can EES deliver equipment and formal technical proposals?',
+    answer: 'Our engineering team prepares detailed technical proposals with load charts, chassis subframe drawings, and pricing within 2 to 4 business hours. Standard fleet delivery timelines depend on chassis availability and custom fitment requirements.'
+  },
+  {
+    question: 'Do you provide on-site installation, chassis PTO mounting, and PDI?',
+    answer: 'Yes. EES handles complete turnkey commissioning including subframe fabrication, PTO hydraulic pump mounting, pre-delivery load testing, dielectric insulation certification (for Jinwoo AWPs), and safety LMI setup.'
+  },
+  {
+    question: 'Does EES supply original OEM spare parts across India?',
+    answer: 'Yes. We maintain a dedicated inventory of genuine OEM parts including hydraulic cylinders, proportional valves, seal kits, LMI sensors, wire ropes, and lithium battery management controllers across our regional depots.'
+  },
+  {
+    question: 'What is included in an EES Annual Maintenance Contract (AMC)?',
+    answer: 'Our AMC packages cover scheduled preventive health checks, oil & filter replacements, hydraulic pressure tests, boom extension lubrication, structural alignment inspections, and priority emergency breakdown dispatch.'
+  },
+  {
+    question: 'Can EES conduct certified operator training for our team?',
+    answer: 'Yes. EES certified trainers provide hands-on operator instruction on site, covering safe load chart reading, stability limits, daily maintenance routines, and emergency lowering protocols.'
+  }
+];
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -22,6 +45,10 @@ function Contact() {
     message: ''
   });
 
+  const formRenderTimeRef = useRef(0);
+  useEffect(() => {
+    formRenderTimeRef.current = Date.now();
+  }, []);
   const [honeypot, setHoneypot] = useState('');
   const [formError, setFormError] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -46,13 +73,19 @@ function Contact() {
       return;
     }
 
-    // Security check 2: Rate limiting cooldown
+    // Security check 2: Bot submission timing detection
+    if (!isHumanSubmissionTiming(formRenderTimeRef.current, 1200)) {
+      setSubmitted(true);
+      return;
+    }
+
+    // Security check 3: Rate limiting cooldown
     if (!checkRateLimit('contact_page_form', 5000)) {
       setFormError('Please wait a few moments before submitting another inquiry.');
       return;
     }
 
-    // Security check 3: Validations
+    // Security check 4: Validations
     if (!validateEmail(formData.email)) {
       setFormError('Please enter a valid corporate email address.');
       return;
@@ -62,7 +95,7 @@ function Contact() {
       return;
     }
 
-    // Security check 4: Sanitize all inputs
+    // Security check 5: Sanitize all inputs
     const cleanPayload = {
       name: sanitizeInput(formData.name),
       company: sanitizeInput(formData.company),
@@ -72,6 +105,9 @@ function Contact() {
       location: sanitizeInput(formData.location),
       message: sanitizeInput(formData.message)
     };
+
+    // Simulated secure dispatch of cleanPayload
+    void cleanPayload;
 
     setTimeout(() => {
       setSubmitted(true);
@@ -87,6 +123,28 @@ function Contact() {
     }, 600);
   };
 
+  const contactSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Equipage Equipment Solutions Contact & Engineering Support',
+    description: 'Direct sales, technical consultations, OEM parts ordering, and PAN-India AMC dispatch for BYD, Terex Franna, Beltas, and Doosan Bobcat machinery.',
+    url: 'https://eeipl.co.in/contact',
+    mainEntity: {
+      '@type': 'LocalBusiness',
+      name: 'Equipage Equipment Solutions',
+      telephone: companyDetails.primaryPhone,
+      email: companyDetails.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Plot No 21 and 21A, Sector 142',
+        addressLocality: 'Noida',
+        addressRegion: 'Uttar Pradesh',
+        postalCode: '201305',
+        addressCountry: 'IN'
+      }
+    }
+  };
+
   return (
     <div className="contact-page animate-fade-up">
       <SEO
@@ -94,6 +152,12 @@ function Contact() {
         description="Connect with Equipage Equipment Solutions (EES / EEIPL) in Delhi NCR, Mumbai, Kolkata, Bengaluru. Request equipment demonstrations, quotations, CAD chassis integration, and AMC consultations."
         keywords="Equipage contact, industrial equipment inquiry, forklift quotation India, Terex crane sales, Beltas ladder support"
         canonicalUrl="https://eeipl.co.in/contact"
+        schemaJson={contactSchema}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Contact Us', url: '/contact' }
+        ]}
+        faqList={contactFaqs}
       />
 
       {/* ── 1. HERO SECTION ─────────────────────────────────────────────────── */}
@@ -578,33 +642,7 @@ function Contact() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {[
-              {
-                question: 'How fast can EES deliver equipment and formal technical proposals?',
-                answer:
-                  'Our engineering team prepares detailed technical proposals with load charts, chassis subframe drawings, and pricing within 2 to 4 business hours. Standard fleet delivery timelines depend on chassis availability and custom fitment requirements.'
-              },
-              {
-                question: 'Do you provide on-site installation, chassis PTO mounting, and PDI?',
-                answer:
-                  'Yes. EES handles complete turnkey commissioning including subframe fabrication, PTO hydraulic pump mounting, pre-delivery load testing, dielectric insulation certification (for Jinwoo AWPs), and safety LMI setup.'
-              },
-              {
-                question: 'Does EES supply original OEM spare parts across India?',
-                answer:
-                  'Yes. We maintain a dedicated inventory of genuine OEM parts including hydraulic cylinders, proportional valves, seal kits, LMI sensors, wire ropes, and lithium battery management controllers across our regional depots.'
-              },
-              {
-                question: 'What is included in an EES Annual Maintenance Contract (AMC)?',
-                answer:
-                  'Our AMC packages cover scheduled preventive health checks, oil & filter replacements, hydraulic pressure tests, boom extension lubrication, structural alignment inspections, and priority emergency breakdown dispatch.'
-              },
-              {
-                question: 'Can EES conduct certified operator training for our team?',
-                answer:
-                  'Yes. EES certified trainers provide hands-on operator instruction on site, covering safe load chart reading, stability limits, daily maintenance routines, and emergency lowering protocols.'
-              }
-            ].map((faq, idx) => {
+            {contactFaqs.map((faq, idx) => {
               const isOpen = activeFaq === idx;
               return (
                 <div key={idx} style={{ background: '#fff', border: '1px solid var(--light)', borderRadius: '8px', overflow: 'hidden' }}>

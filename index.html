@@ -10,6 +10,8 @@
     <!-- Security Directives -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https:; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https:; upgrade-insecure-requests;" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), display-capture=(), fullscreen=(self)" />
 
     <!-- Primary SEO Meta Tags -->
     <title>Equipage Equipment Solutions (EES) | Lithium Forklifts, Franna Cranes & Turntable Ladders India</title>
@@ -34,6 +36,11 @@
     <meta property="og:title" content="Equipage Equipment Solutions (EES) | Industrial Material Handling & Cranes" />
     <meta property="og:description" content="Leading authorized distributor of BYD lithium forklifts, Terex Franna cranes, Beltas aerial ladders, and Doosan Bobcat machinery in India. Full sales, commissioning, and PAN-India AMC support." />
     <meta property="og:image" content="https://eeipl.co.in/logo.png" />
+    <meta property="og:image:secure_url" content="https://eeipl.co.in/logo.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Equipage Equipment Solutions - Industrial Material Handling, Forklifts & Cranes India" />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Card -->
@@ -42,13 +49,17 @@
     <meta name="twitter:title" content="Equipage Equipment Solutions | Industrial Machinery Partner India" />
     <meta name="twitter:description" content="Authorized distributor for BYD Lithium Forklifts, Terex Franna Cranes, Beltas Turntable Ladders & Doosan Bobcat. Serving Delhi NCR, Mumbai, Kolkata, Bengaluru." />
     <meta name="twitter:image" content="https://eeipl.co.in/logo.png" />
+    <meta name="twitter:image:alt" content="Equipage Equipment Solutions - Industrial Equipment Fleet" />
 
     <!-- Favicon & Mobile App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://eeipl.co.in/wp-content/uploads/2023/02/cropped-favicon-32x32.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/logo.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Preconnect to Fonts and Resources -->
+    <!-- DNS Prefetch & Preconnect for High Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -57,7 +68,7 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": ["LocalBusiness", "Corporation"],
       "name": "Equipage Equipment Solutions",
       "alternateName": ["EES", "EEIPL", "Equipage Engineering & Industrial Private Limited"],
       "url": "https://eeipl.co.in",
@@ -67,6 +78,8 @@
       "telephone": "+91-9910408544",
       "email": "contact@eeipl.co.in",
       "priceRange": "$$$$",
+      "currenciesAccepted": "INR",
+      "paymentAccepted": "Bank Transfer, Cheque, Financing",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Plot No 21 and 21A, Sector 142",
@@ -80,6 +93,15 @@
         "latitude": 28.5028,
         "longitude": 77.4107
       },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-9910408544",
+          "contactType": "sales and technical support",
+          "areaServed": "IN",
+          "availableLanguage": ["en", "hi"]
+        }
+      ],
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
@@ -94,6 +116,68 @@
           "name": "India"
         }
       ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Heavy Industrial Equipment & Material Handling Solutions",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "BYD Lithium LiFePO4 Forklifts & MHE",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "BYD Electric Lithium Counterbalance Forklift",
+                  "description": "Zero maintenance, fast 2-hour opportunity charging lithium battery forklift."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Terex Franna Pick and Carry Cranes",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Terex Franna Articulated Mobile Crane",
+                  "description": "Heavy-duty articulated pick & carry crane requiring zero stabilizer outriggers."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Beltas Turntable Fire Rescue Ladders",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Beltas Hydraulic Turntable Rescue Ladder",
+                  "description": "High-altitude municipal firefighting turntable ladder from 18m to 64m height."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Doosan Bobcat Industrial Forklifts",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Doosan Bobcat Diesel & Electric Forklifts",
+                  "description": "Heavy duty forklifts featuring oil-cooled disc brakes and 24/7 reliability."
+                }
+              }
+            ]
+          }
+        ]
+      },
       "sameAs": [
         "https://www.linkedin.com/company/eeipl",
         "https://twitter.com/eeipl_india"
@@ -101,16 +185,20 @@
     }
     </script>
 
-    <!-- Structured Data: WebSite Schema -->
+    <!-- Structured Data: WebSite Schema with SearchAction -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Equipage Equipment Solutions",
+      "alternateName": "EEIPL",
       "url": "https://eeipl.co.in",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://eeipl.co.in/products?search={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://eeipl.co.in/products?search={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     }

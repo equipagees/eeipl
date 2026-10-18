@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { companyDetails, regionalLocations } from '../data/contactData';
+import { companyDetails } from '../data/contactData';
 import SEO from '../components/SEO';
 
 const ACCENT = '#0088cc';
@@ -89,6 +89,31 @@ function About() {
     }
   ];
 
+  const aboutSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About Equipage Equipment Solutions (EES / EEIPL)',
+    description: "Profile of Equipage Equipment Solutions, India's premier authorized equipment distributor for BYD lithium forklifts, Terex Franna cranes, Beltas turntable ladders, and Bobcat industrial machinery.",
+    url: 'https://eeipl.co.in/about',
+    mainEntity: {
+      '@type': 'Corporation',
+      name: 'Equipage Equipment Solutions',
+      alternateName: ['EES', 'EEIPL', 'Equipage Engineering & Industrial Private Limited'],
+      url: 'https://eeipl.co.in',
+      logo: 'https://eeipl.co.in/logo.png',
+      telephone: companyDetails.primaryPhone,
+      email: companyDetails.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Plot No 21 and 21A, Sector 142',
+        addressLocality: 'Noida',
+        addressRegion: 'Uttar Pradesh',
+        postalCode: '201305',
+        addressCountry: 'IN'
+      }
+    }
+  };
+
   return (
     <div className="about-page animate-fade-up">
       <SEO
@@ -96,6 +121,11 @@ function About() {
         description="Learn about Equipage Equipment Solutions (EES / EEIPL), India's premier authorized equipment distributor for BYD lithium forklifts, Terex Franna cranes, Beltas turntable ladders, and Bobcat."
         keywords="about Equipage, EEIPL company profile, industrial equipment distributor India, BYD forklift partner, Terex Franna distributor"
         canonicalUrl="https://eeipl.co.in/about"
+        schemaJson={aboutSchema}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'About Us', url: '/about' }
+        ]}
       />
 
       {/* ── 1. HERO SECTION ─────────────────────────────────────────────────── */}

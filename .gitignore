@@ -8,7 +8,7 @@ dist/
 dist-ssr/
 build/
 
-# Environment Variables & Secrets
+# Environment Variables, Secrets & Tokens
 .env
 .env.local
 .env.development.local
@@ -19,8 +19,12 @@ build/
 *.pem
 *.cert
 *.crt
+*.token
 credentials.json
 secrets.json
+.DS_Store
+.gemini/
+
 
 # Logs
 logs/

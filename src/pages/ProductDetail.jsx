@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { products } from '../data/productsData';
 import SEO from '../components/SEO';
-import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit } from '../utils/security';
+import { sanitizeInput, validateEmail, validatePhone, isBotSubmission, checkRateLimit, isHumanSubmissionTiming } from '../utils/security';
 
 function ProductDetail({ forceId }) {
   const { productId: routeId } = useParams();
@@ -10,6 +10,11 @@ function ProductDetail({ forceId }) {
   const product = products.find((p) => p.id === id);
 
   // Form State
+  const formRenderTimeRef = useRef(0);
+  useEffect(() => {
+    formRenderTimeRef.current = Date.now();
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -21,11 +26,13 @@ function ProductDetail({ forceId }) {
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => {
-    // Reset submission status on product change
+  // Reset form status when product ID changes without cascading effects
+  const [prevId, setPrevId] = useState(id);
+  if (prevId !== id) {
+    setPrevId(id);
     setSubmitted(false);
     setErrorMsg('');
-  }, [id]);
+  }
 
   if (!product) {
     return (
@@ -54,13 +61,19 @@ function ProductDetail({ forceId }) {
       return;
     }
 
-    // Security check 2: Rate limit
+    // Security check 2: Submission Timing Guard
+    if (!isHumanSubmissionTiming(formRenderTimeRef.current, 1200)) {
+      setSubmitted(true);
+      return;
+    }
+
+    // Security check 3: Rate limit
     if (!checkRateLimit(`quote_${product.id}`, 4000)) {
       setErrorMsg('Please wait a few seconds before submitting another request.');
       return;
     }
 
-    // Security check 3: Validations
+    // Security check 4: Validations
     if (!validateEmail(formData.email)) {
       setErrorMsg('Please enter a valid business email address.');
       return;
@@ -70,7 +83,7 @@ function ProductDetail({ forceId }) {
       return;
     }
 
-    // Security check 4: Input Sanitization
+    // Security check 5: Input Sanitization
     const sanitizedData = {
       name: sanitizeInput(formData.name),
       company: sanitizeInput(formData.company),
@@ -78,6 +91,9 @@ function ProductDetail({ forceId }) {
       phone: sanitizeInput(formData.phone),
       message: sanitizeInput(formData.message)
     };
+
+    // Simulated secure dispatch of sanitizedData
+    void sanitizedData;
 
     setTimeout(() => {
       setSubmitted(true);
@@ -113,6 +129,11 @@ function ProductDetail({ forceId }) {
         keywords={`${product.name}, ${product.brand}, industrial equipment India, ${product.category}`}
         canonicalUrl={`https://eeipl.co.in/products/${product.id}`}
         schemaJson={productSchema}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Products', url: '/products' },
+          { name: product.name, url: `/products/${product.id}` }
+        ]}
       />
 
       {/* Product Hero Header */}
